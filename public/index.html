@@ -21,32 +21,67 @@
 </head>
 
 <body>
+  <!-- Toolbar -->
   <div class="toolbar">
-    <div class="tabs">
-
-    </div>
+    <div class="tabs"></div>
     <button class="home-button" onclick="goForward()"><i class="fa-solid fa-arrow-left"></i></button>
     <button class="home-button" onclick="goBack()"><i class="fa-solid fa-arrow-right"></i></button>
     <button class="home-button" onclick="refreshTab()"><i class="fa-solid fa-rotate-right"></i></button>
     <button class="home-button" onclick="location.href='index.html'"><i class="fa-solid fa-home"></i></button>
-    <input type="text" id="url-input" placeholder="Enter a url or search term">
+    <input type="text" id="url-input" placeholder="Enter a url or search term" />
     <button class="home-button" id="setttings" onclick="location.href='settings.html'"><i class="fa-solid fa-gear"></i></button>
-</div>
+  </div>
+
+  <!-- Title -->
   <div class="title">
     <h1 id="home-title">Phantom</h1>
   </div>
 
+  <!-- Form -->
   <form id="form">
     <input id="input" placeholder="Search the Web..." />
   </form>
-  <h1 id="time"></h1>
-  </script>
 
-  <!-- JavaScript files at the end for better performance -->
+  <!-- Time -->
+  <h1 id="time"></h1>
+
+  <!-- JavaScript files -->
   <script src="/scramjet/scramjet.controller.js" defer></script>
   <script src="/assets/main.js" defer></script>
   <script src="/assets/time.js" defer></script>
+  <script src="/assets/settings.js" defer></script>
 
+  <!-- Theme Switching Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Fetch theme from localStorage (set by settings.js)
+      const savedTheme = localStorage.getItem("theme") || "black";
+
+      // Apply the theme
+      function applyTheme(theme) {
+        const body = document.body;
+        if (theme === "black") {
+          body.style.backgroundColor = "rgb(0, 0, 0)"; // Black background
+          body.style.color = "rgb(255, 255, 255)"; // White text
+        } else if (theme === "blue") {
+          body.style.backgroundColor = "#073673"; // Blue background
+          body.style.color = "rgb(255, 255, 255)"; // White text
+        } else if (theme === "purple") {
+          body.style.backgroundColor = "#20124d"; // Purple background
+          body.style.color = "rgb(255, 255, 255)"; // White text
+        }
+      }
+
+      // Apply the theme on page load
+      applyTheme(savedTheme);
+
+      // Listen for changes (optional, in case settings.js modifies localStorage dynamically)
+      window.addEventListener("storage", () => {
+        const updatedTheme = localStorage.getItem("theme");
+        if (updatedTheme) applyTheme(updatedTheme);
+      });
+    });
+  </script>
 </body>
 
 </html>
