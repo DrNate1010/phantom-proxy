@@ -1,8 +1,6 @@
 var form = document.getElementById("form");
 var input = document.getElementById("input");
-
-
-
+var urlInput = document.getElementById("url-input"); // Top bar search field
 
 async function init() {
     try {
@@ -14,6 +12,7 @@ async function init() {
             await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
             console.log("Using websocket transport " + "wisp url is: " + wispUrl);
         }
+
         const scramjet = new ScramjetController({
             prefix: "/scramjet/service/",
             files: {
@@ -26,8 +25,6 @@ async function init() {
         });
         window.sj = scramjet;
         scramjet.init("../sjsw.js");
-
-
     } catch (error) {
         console.error("Error setting up BareMux transport:", error);
     }
@@ -35,34 +32,22 @@ async function init() {
 init();
 
 if (form && input) {
-    form.addEventListener("submit", async (event) => {
+    function isUrl(val = "") {
+        return /^http(s?):\/\//.test(val) || (val.includes(".") && val[0] !== " ");
+    }
 
-
-        function isUrl(val = "") {
-            if (
-                /^http(s?):\/\//.test(val) ||
-                (val.includes(".") && val.substr(0, 1) !== " ")
-            ) {
-                return true;
-            }
-            return false;
-        }
-
-        event.preventDefault();
-
+    async function processSearch(url) {
         if (!localStorage.getItem("proxy")) {
             localStorage.setItem("proxy", "uv");
         }
 
         try {
             await registerSW();
-
             console.log("Registering service worker...");
         } catch (err) {
-            err.textContent = err.toString();
+            console.error("Error registering service worker:", err);
             throw err;
         }
-        var url = input.value;
 
         if (!isUrl(url)) {
             url = "https://www.google.com/search?q=" + url;
@@ -71,35 +56,48 @@ if (form && input) {
         }
 
         if (localStorage.getItem("proxy") == "uv") {
-            uvEncode();
+            uvEncode(url);
+        } else if (localStorage.getItem("proxy") == "sj") {
+            sjEncode(url);
+        } else if (localStorage.getItem("proxy") == "rammerhead") {
+            rhEncode(url);
         }
-        else if (localStorage.getItem("proxy") == "sj") {
-            sjEncode();
-        }
-        else if (localStorage.getItem("proxy") == "rammerhead") {
-            rhEncode();
-        }
+    }
 
+    async function rhEncode(url) {
+        url = await RammerheadEncode(url);
+        window.location.href = "/" + url;
+        window.location.href = "/browser.html";
+        console.log("Rammerhead encoding used.");
+    }
 
-        async function rhEncode() {
-            url = await RammerheadEncode(url);
-            window.location.href = "/" + url;
-            window.location.href = "/browser.html";
-            console.log('van is retarded');
-        }
-        async function uvEncode() {
-            url = __uv$config.prefix + __uv$config.encodeUrl(url);
-            localStorage.setItem("url", url);
-            window.location.href = "/browser.html";
-            console.log('van is retarded');
-        }
-        async function sjEncode() {
-            url = "/scramjet/service/" + encodeURIComponent(url);
-            localStorage.setItem("url", url);
-            window.location.href = "/browser.html";
-            console.log('van is retarded');
-        }
+    async function uvEncode(url) {
+        url = __uv$config.prefix + __uv$config.encodeUrl(url);
+        localStorage.setItem("url", url);
+        window.location.href = "/browser.html";
+        console.log("Ultraviolet encoding used.");
+    }
+
+    async function sjEncode(url) {
+        url = "/scramjet/service/" + encodeURIComponent(url);
+        localStorage.setItem("url", url);
+        window.location.href = "/browser.html";
+        console.log("Scramjet encoding used.");
+    }
+
+    // Listen to form submissions
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        processSearch(input.value);
     });
 
+    // Listen to top bar searches
+    if (urlInput) {
+        urlInput.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                processSearch(urlInput.value);
+            }
+        });
+    }
 }
-
