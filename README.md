@@ -1,7 +1,4 @@
-<div align="center">
-    <img src="https://raw.githubusercontent.com/DrNate1010/phantom-proxy/public/assets/images/phantom-rounded.png">
-    
-</div>It does not deploy to 
+It does not deploy to 
 
 -Vercel
 
