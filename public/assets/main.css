@@ -4,8 +4,12 @@
     --font: #ffffff;
 }
 body {
-    font-family: "font";
-    background-color: var(--primary);
+       font-family: "font";
+    background-color: var(--primary); /* Black as fallback */
+    background-image: url('https://lh3.googleusercontent.com/pw/AP1GczN3f7LbL9DwZWNvSbk6j2DlVl2QB-ZUJJT1892qkuXunmK_x3NniWZ5PA26HL_h6DtZh4_-TYhT_HBt9nnWpK50PUxuDPQ0D6M35sfqH4U4Zue-tDwKukOoiaIyC2waDI66yV6QP3d2fK9HWJdihNjj=w2290-h1288-s-no-gm?authuser=0');
+    background-size: 100%; /* Makes the image cover the entire screen */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
 }
 
 #input {
