@@ -71,5 +71,12 @@ document.querySelectorAll('.settings-button').forEach(button => {
     }
   });
 });
+if (localStorage.getItem("proxy") === "uv") {
+  uvEncode(url);
+} else if (localStorage.getItem("proxy") === "sj") {
+  sjEncode(url);
+} else if (localStorage.getItem("proxy") === "rammerhead") {
+  rhEncode(url);
+}
 
 
