@@ -1,46 +1,48 @@
-It does not deploy to 
-
+It does not deploy to <br>
 -Vercel
-
+<br>
 -Netlify
-
+<br>
 -GitHub Pages
-
+<br>
 -StackBlitz
-
-However, it does deploy to
-
+<br>
+However, it does deploy to <br>
 -Render
-
+<br>
 -Codeanywhere
-
+<br>
 -Gitpod
-
+<br>
 -Koyeb
-
+<br>
 -CodeSandbox
-
+<br>
 -Github Codespaces
-
+<br>
 -Railway
-
-For steps to deploy search it up on Youtube or ask ChatGPT
+<br>
 
 This is a Node JS application with npm packages. To run locally you must first run the following:
-
+```bash
 git clone https://github.com/DrNate1010/phantom-proxy
-
 cd phantom-proxy
+  ```
+  <br>
+  
+```bash
+  npm i
+  pnpm i
+  ```
+  <br>
 
-npm i
-
-pnpm i
-
-pnpm start
+  ```bash
+  pnpm start
+  ```
 
 You should have phantom loaded on localhost:8080!
 
-Made By DrNate1010, vannsigma, And Neven12376
+Made By DrNate1010
 
 Enjoy the Afterlife!
 
